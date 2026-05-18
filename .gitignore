@@ -67,6 +67,8 @@ desktop.ini
 # ==========================================
 # Python 캐시 및 컴파일 파일
 **/backend-ai/__pycache__/
+**/backend-ai/__pycache__/*.pyc
+**/backend-ai/*.pyc
 **/backend-ai/*.py[cod]
 **/backend-ai/*$py.class
 **/backend-ai/.pytest_cache/
