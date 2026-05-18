@@ -87,7 +87,7 @@ desktop.ini
 **/backend-ai/.ipynb_checkpoints/
 
 # 데이터 파일 
-**/backend-ai/data/
+**/backend-ai/dataset/
 
 # ==========================================
 # Docker / 데이터 보관용 가상 볼륨 관련
