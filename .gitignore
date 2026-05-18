@@ -1,0 +1,98 @@
+# ==========================================
+# Global / OS 관련 파일
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+*.swp
+*.bak
+*.log
+
+# IDE 및 도구 관련
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==========================================
+# Frontend (Node.js / 웹 빌드 아티팩트)
+# ==========================================
+**/frontend/node_modules/
+**/frontend/.pnp
+**/frontend/.pnp.js
+**/frontend/dist/
+**/frontend/build/
+**/frontend/.next/
+**/frontend/out/
+**/frontend/.nuxt/
+
+# Frontend 로컬 환경변수 및 로그
+**/frontend/.env
+**/frontend/.env.local
+**/frontend/.env.development.local
+**/frontend/.env.test.local
+**/frontend/.env.production.local
+**/frontend/npm-debug.log*
+**/frontend/yarn-debug.log*
+**/frontend/yarn-error.log*
+
+# ==========================================
+# Backend Spring (Java / Gradle)
+# ==========================================
+**/backend-spring/.gradle/
+**/backend-spring/build/
+**/backend-spring/out/
+
+# Spring 설정 및 비밀키 (중요!)
+**/backend-spring/src/main/resources/application-local.yml
+**/backend-spring/src/main/resources/application-prod.yml
+# 만약 비밀번호나 API 키를 일반 application.yml에 적으실 거라면 
+# 이 프로젝트에선 .env로 관리하거나 주석을 풀고 제외하는 것이 안전합니다.
+# **/backend-spring/src/main/resources/application.yml
+
+# 툴 플러그인 관련
+**/backend-spring/.navigation/
+**/backend-spring/.settings/
+**/backend-spring/.classpath
+**/backend-spring/.project
+**/backend-spring/bin/
+
+# ==========================================
+# Backend AI (Python / FastAPI)
+# ==========================================
+# Python 캐시 및 컴파일 파일
+**/backend-ai/__pycache__/
+**/backend-ai/*.py[cod]
+**/backend-ai/*$py.class
+**/backend-ai/.pytest_cache/
+**/backend-ai/.mypy_cache/
+**/backend-ai/.ruff_cache/
+
+# 가상환경 (Virtual Environments)
+**/backend-ai/.venv/
+**/backend-ai/venv/
+**/backend-ai/env/
+**/backend-ai/ENV/
+
+# AI 비밀키 및 환경변수 (⚠️ 제미나이 API Key 유출 방지!)
+**/backend-ai/.env
+**/backend-ai/.env.local
+
+# Jupyter Notebook 캐시
+**/backend-ai/.ipynb_checkpoints/
+
+# 데이터 파일 
+**/backend-ai/data/
+
+# ==========================================
+# Docker / 데이터 보관용 가상 볼륨 관련
+# ==========================================
+# 만약 docker-compose 등에서 로컬 폴더를 볼륨으로 매핑하여 
+# 오픈서치 데이터가 로컬에 쌓이게 될 경우를 대비해 제외 처리
+**/docker/data/
+**/opensearch_data/
