@@ -1,0 +1,188 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+  background-color: #f4f6f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.chat-container {
+  width: 500px;
+  height: 700px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.chat-header {
+  background: #1e293b;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+.chat-header h2 {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+.chat-header p {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.chat-box {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #f8fafc;
+}
+.message {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-all;
+}
+.ai-message {
+  background: #e2e8f0;
+  color: #1e293b;
+  align-self: flex-start;
+  border-top-left-radius: 2px;
+  white-space: pre-line;
+}
+.user-message {
+  background: #2563eb;
+  color: white;
+  align-self: flex-end;
+  border-top-right-radius: 2px;
+}
+
+/* 📚 출처 표기 서식 */
+.source-box {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #cbd5e1;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.input-area {
+  display: flex;
+  padding: 16px;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  gap: 10px;
+}
+#userInput {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.95rem;
+}
+#userInput:focus {
+  border-color: #2563eb;
+}
+#sendBtn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#sendBtn:hover {
+  background: #1d4ed8;
+}
+
+/* ⏳ 로딩 스피너 스타일 */
+.loader-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  display: none;
+  z-index: 999;
+}
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #2563eb;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loader-wrapper p {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* 2. ✅ 새로운 채팅창 내부 로딩 메시지 박스 스타일 */
+.loader-message-wrapper {
+  display: none; /* 평소엔 숨김 */
+  align-self: flex-start;
+  max-width: 85%;
+  margin-top: 5px;
+}
+
+/* AI 말풍선과 스타일 통일, 단 내부 스피너 배치용 flex 적용 */
+.loading-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f5f9; /* 답변 말풍선보다 조금 더 연한 회색 */
+  color: #64748b; /* 글씨색도 조금 연하게 */
+  padding: 10px 16px;
+}
+
+/* 말풍선 내부 소형 스피너 디자인 */
+.loader-inner {
+  border: 3px solid #e2e8f0; /* 연한 테두리 */
+  border-top: 3px solid #3b82f6; /* 국방색 느낌 뺀 세련된 블루 테두리 */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin-inner 1s linear infinite; /* 애니메이션 이름 변경 */
+}
+
+@keyframes spin-inner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-box span {
+  font-size: 0.85rem;
+}
