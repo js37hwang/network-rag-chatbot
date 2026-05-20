@@ -3,32 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NetMind AI 기술지원 챗봇</title>
+    <title>Network AI 챗봇</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <h2>🤖 NetMind 기술지원 센터</h2>
+            <h2>🤖 Network AI</h2>
             <p>시스코 네트워크 매뉴얼 기반 RAG 챗봇 시스템</p>
         </div>
         
         <div class="chat-box" id="chatBox">
             <div class="message ai-message">
-                안녕하세요! 방대한 네트워크 지식을 바탕으로 답변을 cisco chatbot 입니다!
+                안녕하세요! 방대한 네트워크 지식을 바탕으로 답변을 생성해내는 Network AI 챗봇 cisco 입니다!
             </div>
 
             <div class="loader-message-wrapper" id="loaderWrapper">
                 <div class="message ai-message loading-box">
                     <div class="loader-inner"></div>
-                    <span>NetMind 봇이 답변을 생성 중입니다...</span>
+                    <span>Network AI 챗봇이 답변을 생성 중입니다...</span>
                 </div>
             </div>
         </div>
         
         <div class="input-area">
             <input type="text" id="userInput" placeholder="질문 내용을 입력하세요..." onkeypress="handleKeyPress(event)">
-            <button id="sendBtn" onclick="sendMessage()">전송</button>
+            
+            <button id="sendBtn" onclick="sendMessage()">
+                <span id="btnText">전송</span>
+                <div class="btn-spinner" id="btnSpinner"></div>
+            </button>
         </div>
     </div>
 
@@ -36,6 +40,7 @@
         <div class="loader"></div>
         <p>오픈서치 벡터 디비 검색 및 AI 답변 생성 중...</p>
     </div>
+    
     <script src="app.js"></script>
 </body>
 </html>

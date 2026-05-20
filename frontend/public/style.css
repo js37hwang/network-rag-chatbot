@@ -41,6 +41,15 @@ body {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  display: flex; /* 👈 이 속성 덕분에 order가 먹힙니다 */
+  flex-direction: column;
+  gap: 14px;
+  background: #f8fafc;
+}
+.chat-box {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -95,17 +104,56 @@ body {
 #userInput:focus {
   border-color: #2563eb;
 }
+
+#userInput:disabled {
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
 #sendBtn {
+  position: relative; /* 내부 스피너 배치를 위한 기준점 */
   background: #2563eb;
   color: white;
   border: none;
-  padding: 0 20px;
+  padding: 0 24px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  min-width: 80px; /* 💡 스피너로 바뀔 때 버튼 크기가 줄어들지 않도록 최소 너비 고정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
 }
+
 #sendBtn:hover {
   background: #1d4ed8;
+}
+/* 🔄 버튼 안에서 돌아갈 아주 작은 스피너 디자인 */
+.btn-spinner {
+  display: none; /* 평소엔 숨김 */
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff; /* 하얀색 스피너 */
+  border-radius: 50%;
+  animation: spin-button 0.8s linear infinite;
+}
+
+@keyframes spin-button {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 🚫 [수정] 질문 전송 중일 때의 버튼 상태 */
+#sendBtn:disabled {
+  background: #3b82f6 !important; /* 원래 색상 계열 유지하여 국방색/회색 방지 */
+  cursor: not-allowed;
+  opacity: 0.85; /* 살짝 투명하게 처리해 로딩 느낌 강조 */
 }
 
 /* ⏳ 로딩 스피너 스타일 */
@@ -152,6 +200,7 @@ body {
   align-self: flex-start;
   max-width: 85%;
   margin-top: 5px;
+  order: 9999;
 }
 
 /* AI 말풍선과 스타일 통일, 단 내부 스피너 배치용 flex 적용 */
