@@ -40,7 +40,7 @@ class NetMindRAG:
         )
         
         # OpenSearch 연결
-        self.opensearchUrl = os.getenv("OPENSEARCH_ENGEIN_URL", "http://localhost:9200")
+        self.opensearchUrl = os.getenv("OPENSEARCH_ENGEIN_URL", "http://opensearch-db:9200")
         self.indexName = os.getenv("OPENSEARCH_INDEX_NAME", "cicso_network_index")
         
         self.vectorStore = OpenSearchVectorSearch(
@@ -87,15 +87,39 @@ class NetMindRAG:
 
 
     def _getLatestGeminiModel(self):
-        """gemini api"""
+        """현재 사용 가능한 gemini flash 모델 중 최신 버전 자동 선택"""
         try:
             client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
             models = client.models.list()
-            availableModels = [m.name.replace("models/", "") for m in models if "generateContent" in getattr(m, "supported_actions", []) and "flash" in m.name.lower()]
             
-            return sorted(availableModels, reverse=True)[0] if availableModels else "gemini-1.5-flash"
-        except Exception:
-            return "gemini-1.5-flash"
+            availableModels = []
+            for m in models:
+                name = m.name.replace("models/", "")
+                supported = getattr(m, "supported_actions", []) or []
+                
+                # flash 모델 + generateContent 지원 + 실험/프리뷰 제외
+                if (
+                    "flash" in name.lower()
+                    and "generateContent" in supported
+                    and "exp" not in name.lower()
+                    and "preview" not in name.lower()
+                    and "thinking" not in name.lower()
+                ):
+                    availableModels.append(name)
+            
+            print(f"✅ 사용 가능한 Gemini 모델 목록: {availableModels}")
+            
+            if availableModels:
+                selected = sorted(availableModels, reverse=True)[0]
+                print(f"🚀 선택된 모델: {selected}")
+                return selected
+            
+            print("⚠️ 사용 가능한 모델 없음, 기본값 사용")
+            return "gemini-2.0-flash"
+            
+        except Exception as e:
+            print(f"❌ 모델 조회 실패: {e}")
+            return "gemini-2.0-flash"
 
     # ==========================================
     # 답변 및 출처 return

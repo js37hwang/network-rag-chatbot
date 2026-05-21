@@ -5,7 +5,7 @@ import platform  # OS 환경(Win/Darwin)을 감지
 
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader # pdf 로더
-from langchain_textSplitters import RecursiveCharacterTextSplitter # chunking 위해
+from langchain_text_splitters import RecursiveCharacterTextSplitter # chunking 위해
 from langchain_community.vectorstores import OpenSearchVectorSearch
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings # 임베딩 모델 불러오자
 
