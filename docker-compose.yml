@@ -1,0 +1,131 @@
+version: "3.8"
+
+networks:
+  netmind-network:
+    driver: bridge
+
+# 🌟 1. 도커 엔진이 직접 관리하는 영구 저장소(볼륨) 정의
+volumes:
+  opensearch-data: # 오픈서치 데이터 저장용
+  mysql-data: # MySQL 데이터 저장용
+
+services:
+  # -------------------------------------------------------------
+  # 1. 🔍 오픈서치 벡터 디비 (데이터 영구 보존 + 자동 재시작 추가)
+  # -------------------------------------------------------------
+  opensearch-db:
+    image: opensearchproject/opensearch:2.11.0
+    container_name: opensearch-db
+    # 🌟 [대박 중요] 컨테이너가 에러로 죽거나 도커가 켜질 때 자동으로 띄우는 옵션
+    restart: always
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - DISABLE_SECURITY_PLUGIN=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200"
+    volumes:
+      # 🌟 [대박 중요] 컨테이너 내부의 디비 서고 폴더를 호스트 볼륨에 링크 걸어서 영구 저장!
+      - opensearch-data:/usr/share/opensearch/data
+    networks:
+      - netmind-network
+
+  # -------------------------------------------------------------
+  # 2. 🐬 MySQL 데이터베이스 (새로 추가 및 데이터 영구 보존 세팅)
+  # -------------------------------------------------------------
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_root_password # 루트 비밀번호 설정
+      - MYSQL_DATABASE=netmind_db # 사용할 스키마 자동 생성
+      - MYSQL_USER=netmind_user # 커스텀 유저 생성
+      - MYSQL_PASSWORD=netmind_password # 커스텀 유저 비밀번호
+      - TZ=Asia/Seoul # 타임존 서울 설정
+    volumes:
+      # 🌟 [대박 중요] MySQL의 데이터 폴더를 호스트 볼륨에 매핑해서 영구 저장!
+      - mysql-data:/var/lib/mysql
+    networks:
+      - netmind-network
+
+  # -------------------------------------------------------------
+  # 3. 🐍 AI 백엔드 (FastAPI)
+  # -------------------------------------------------------------
+  backend-ai:
+    build: ./backend-ai
+    container_name: python-ai-container
+    restart: always # AI 서버도 꺼지면 항상 다시 켜지도록 설정
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend-ai/dataset:/app/dataset
+    environment:
+      - OPENSEARCH_ENGEIN_URL=http://opensearch-db:9200
+      - OPENSEARCH_INDEX_NAME=cicso_network_index
+      - EMBEDDING_MODEL_NAME=BAAI/bge-m3
+      - EMBEDDING_DEVICE=cuda
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - LLM_MODE=gemini
+      - CORS_ORIGINS=http://spring-backend-container:8080,http://localhost:3000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    depends_on:
+      - opensearch-db
+      - mysql-db # MySQL이 먼저 가동된 후 실행되도록 유도
+    networks:
+      - netmind-network
+
+  # -------------------------------------------------------------
+  # 4. ☕ 백엔드 (스프링 부트)
+  # -------------------------------------------------------------
+  backend-spring:
+    build: ./backend-spring
+    container_name: spring-backend-container
+    restart: always
+    ports:
+      - "8181:8080"
+    environment:
+      - AI_SERVER_URL=http://python-ai-container:8000
+      # 스프링 application.yml에서 활용할 템플릿 환경 변수 예시
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/netmind_db?serverTimezone=Asia/Seoul
+      - SPRING_DATASOURCE_USERNAME=netmind_user
+      - SPRING_DATASOURCE_PASSWORD=netmind_password
+    depends_on:
+      - backend-ai
+      - mysql-db
+    networks:
+      - netmind-network
+
+  # -------------------------------------------------------------
+  # 5. 🟢 프론트엔드 (Node.js Express)
+  # -------------------------------------------------------------
+  frontend-node:
+    build: ./frontend
+    container_name: node-frontend-container
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - SPRING_BACKEND_URL=http://spring-backend-container:8080
+    depends_on:
+      - backend-spring
+    networks:
+      - netmind-network
