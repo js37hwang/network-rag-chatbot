@@ -1,6 +1,3 @@
-// app.js 전체 교체
-const SPRING_API_URL = "/api/client/ask";
-
 function handleKeyPress(event) {
   if (event.key === "Enter") {
     sendMessage();
@@ -36,7 +33,7 @@ async function sendMessage() {
   chatBox.scrollTop = chatBox.scrollHeight;
 
   try {
-    const response = await fetch(SPRING_API_URL, {
+    const response = await fetch("/api/client/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ question: question }),
@@ -64,7 +61,7 @@ async function sendMessage() {
     console.error(error);
     loader.style.display = "none";
     appendMessage(
-      "❌ 스프링 부트 서버 연결 실패. 서버 가동 상태를 확인하세요.",
+      "❌ 서버 연결 실패. 서버 가동 상태를 확인하세요.",
       "ai-message",
     );
   } finally {
