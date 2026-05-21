@@ -1,0 +1,35 @@
+# 🔥 톰캣 내장 폴더 (엄청 큼)
+apache-tomcat-9.0.118/
+apache/
+Servers/
+
+# 빌드 산출물
+target/
+bin/
+build/
+out/
+
+# 런타임 임시 폴더
+work/
+temp/
+logs/
+wtpwebapps/
+backup/
+
+# IDE 설정
+.settings/
+.classpath
+.project
+.springBeans
+.factorypath
+.apt_generated/
+.metadata/
+.mvn/
+
+# 환경변수
+.env
+.env.*
+
+# 기타
+*.log
+.DS_Store

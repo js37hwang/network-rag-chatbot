@@ -1,0 +1,15 @@
+# 📦 node_modules (최대 주범!)
+node_modules/
+
+# 빌드 산출물
+build/
+dist/
+.next/
+
+# 환경변수
+.env
+.env.*
+
+# 기타
+*.log
+.DS_Store
