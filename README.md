@@ -1,7 +1,7 @@
 # 🔍 Cisco Network RAG 기반 지능형 챗봇 시스템
 
-> **Cisco 네트워크 장비 전용 RAG(Retrieval-Augmented Generation) 기반 지능형 챗봇**
-> 네트워크 장애 및 기술 문의에 신속하게 대응하기 위해, 신뢰할 수 있는 출처를 기반으로 답변을 생성하고 실시간으로 중계하는 멀티 컨테이너 아키텍처 시스템입니다.
+> **후니의 쉽게 쓴 Cisco network RAG(Retrieval-Augmented Generation) 기반 지능형 챗봇**
+> 네트워크 관련 궁금증에 대해 신뢰할 수 있는 출처를 기반으로 답변을 생성하고 실시간으로 중계하는 멀티 컨테이너 아키텍처 시스템입니다.
 
 ---
 
